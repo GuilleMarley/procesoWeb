@@ -13,15 +13,47 @@ function createFilmButtons(data) {
     filmButton.textContent = film.name;
     filmButton.classList.add("auto-button");
 
-    // Crear elemento de imagen
     var filmImage = document.createElement("img");
     filmImage.src = film.pic;
     filmImage.alt = film.name;
     filmButton.appendChild(filmImage);
 
     filmButton.addEventListener("click", function () {
-      window.open(film.link);
+      var videoContainer = document.createElement("div");
+      videoContainer.classList.add("video-container");
+
+      var backButtonVideo = document.createElement("button");
+      backButtonVideo.textContent = "Volver";
+      backButtonVideo.classList.add("back-button");
+      videoContainer.appendChild(backButtonVideo);
+
+      backButtonVideo.addEventListener("click", function () {
+        container.innerHTML = ""; // Elimina el video actual
+        fetchFilmButtons(); // Vuelve a cargar los botones principales
+      });
+
+      var videoIframe = document.createElement("iframe");
+      videoIframe.src = film.link;
+      videoIframe.allowFullscreen = true;
+      videoContainer.appendChild(videoIframe);
+
+      // Reemplazar los botones por el video
+      container.innerHTML = "";
+      container.appendChild(videoContainer);
     });
+
     container.appendChild(filmButton);
   });
+
+  var backButton = document.createElement("button");
+  backButton.textContent = "Volver";
+  backButton.classList.add("back-button");
+  container.appendChild(backButton);
+
+  backButton.addEventListener("click", function () {
+    container.innerHTML = ""; // Elimina los botones o el video actual
+    fetchFilmButtons(); // Vuelve a cargar los botones principales
+  });
 }
+
+fetchFilmButtons();
